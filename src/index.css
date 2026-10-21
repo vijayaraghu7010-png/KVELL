@@ -1,0 +1,339 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+ * KVCET design tokens.
+ *
+ * The whole system is built from three brand colours:
+ *   Dark Navy  #122838  — navigation, headers, primary actions, headings
+ *   Warm Beige #E4D1AF  — selected nav, highlights, secondary accents
+ *   Light Blue #EAF4FC  — page background and large layout areas
+ *
+ * Everything else is a role token derived from those three (plus white for
+ * content surfaces and the standard status hues, which stay distinct because
+ * they carry meaning). Components reference the role tokens, never a raw hex,
+ * so the theme is changed here and nowhere else.
+ * ------------------------------------------------------------------------ */
+:root {
+  /* Brand */
+  --kv-navy: #122838;
+  --kv-beige: #E4D1AF;
+  --kv-blue: #EAF4FC;
+
+  /* Navigation */
+  --kv-nav-bg: var(--kv-navy);
+  --kv-nav-active: var(--kv-beige);
+  --kv-on-nav: #FFFFFF;
+  --kv-on-nav-muted: #B9C8D4;
+  --kv-on-nav-active: var(--kv-navy);
+
+  /* Page and content surfaces */
+  --kv-page: var(--kv-blue);
+  --kv-surface: #FFFFFF;
+  --kv-surface-alt: #F5FAFE;
+  --kv-surface-sunken: #E1EDF8;
+
+  /* Interactive */
+  --kv-primary: var(--kv-navy);
+  --kv-primary-hover: #1E3C52;
+  --kv-on-primary: #FFFFFF;
+  --kv-accent: var(--kv-beige);
+  --kv-accent-soft: #F3E9D7;
+  --kv-accent-strong: #C9AF84;
+  --kv-on-accent: var(--kv-navy);
+
+  /* Lines */
+  --kv-border: #C6DCEE;
+  --kv-border-soft: #DCEAF5;
+
+  /* Type */
+  --kv-heading: var(--kv-navy);
+  --kv-text: #1B3242;
+  --kv-text-muted: #5A7183;
+  --kv-text-faint: #8A9CAB;
+}
+
+/* ---------------------------------------------------------------------------
+ * Dark theme. The same role tokens are re-pointed, so every component that
+ * uses them follows without a `dark:` variant of its own. Beige becomes the
+ * interactive colour here — it is the brand hue that reads on a dark surface.
+ * ------------------------------------------------------------------------ */
+.dark {
+  color-scheme: dark;
+
+  --kv-nav-bg: #0B151D;
+  --kv-on-nav: #E8F1F8;
+  --kv-on-nav-muted: #93A7B6;
+
+  --kv-page: #0B151D;
+  --kv-surface: #152633;
+  --kv-surface-alt: #1B303F;
+  --kv-surface-sunken: #101F2B;
+
+  --kv-primary: var(--kv-beige);
+  --kv-primary-hover: #F0E2C8;
+  --kv-on-primary: var(--kv-navy);
+  --kv-accent-soft: #24404F;
+  --kv-accent-strong: var(--kv-beige);
+
+  --kv-border: #2A4254;
+  --kv-border-soft: #223848;
+
+  --kv-heading: #E8F1F8;
+  --kv-text: #DCE8F1;
+  --kv-text-muted: #9FB4C4;
+  --kv-text-faint: #7E94A5;
+}
+
+@layer base {
+  html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  body {
+    background-color: var(--kv-page);
+    color: var(--kv-text);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * Compatibility layer.
+ *
+ * The portals were written against Tailwind's stock neutrals (white, slate-*,
+ * blue-*). Rather than rewrite several hundred call sites, those utilities are
+ * remapped onto the role tokens here: one `.utility` selector each, so the
+ * rules land in the same cascade position as the utility they replace and the
+ * last definition wins. New code should use the token utilities directly.
+ * ------------------------------------------------------------------------ */
+@layer utilities {
+  .bg-white { background-color: var(--kv-surface); }
+  .bg-slate-50 { background-color: var(--kv-surface-alt); }
+  .bg-slate-100 { background-color: var(--kv-surface-sunken); }
+  .bg-slate-200 { background-color: var(--kv-border); }
+  .bg-blue-50 { background-color: var(--kv-surface-alt); }
+  .bg-blue-100 { background-color: var(--kv-surface-sunken); }
+  .bg-blue-600, .bg-blue-700 { background-color: var(--kv-primary); }
+
+  .hover\:bg-slate-50:hover,
+  .hover\:bg-blue-50:hover { background-color: var(--kv-surface-alt); }
+  .hover\:bg-slate-100:hover { background-color: var(--kv-surface-sunken); }
+  .hover\:bg-blue-700:hover { background-color: var(--kv-primary-hover); }
+
+  .text-slate-900, .text-slate-800 { color: var(--kv-heading); }
+  .text-slate-700, .text-slate-600 { color: var(--kv-text); }
+  .text-slate-500, .text-slate-400 { color: var(--kv-text-muted); }
+  .text-slate-300 { color: var(--kv-text-faint); }
+  .text-blue-600, .text-blue-700, .text-blue-800 { color: var(--kv-primary); }
+  .hover\:text-slate-900:hover { color: var(--kv-heading); }
+
+  .border-slate-100, .border-slate-200, .border-slate-300,
+  .border-blue-50, .border-blue-100, .border-blue-200 { border-color: var(--kv-border); }
+  .border-blue-500, .border-blue-600 { border-color: var(--kv-primary); }
+  .hover\:border-slate-400:hover { border-color: var(--kv-primary); }
+
+  .divide-slate-100 > :not([hidden]) ~ :not([hidden]),
+  .divide-slate-200 > :not([hidden]) ~ :not([hidden]) { border-color: var(--kv-border); }
+
+  .ring-blue-100 { --tw-ring-color: var(--kv-border); }
+
+  /* Opacity-suffixed variants of the same neutrals, flattened onto the tokens. */
+  .bg-slate-50\/70, .bg-slate-50\/60,
+  .bg-blue-50\/80, .bg-blue-50\/70, .bg-blue-50\/60, .bg-blue-50\/40, .bg-blue-50\/30, .bg-blue-50\/25 { background-color: var(--kv-surface-alt); }
+  .bg-slate-100\/80, .bg-blue-200\/50, .bg-slate-300, .bg-slate-400 { background-color: var(--kv-surface-sunken); }
+  .bg-slate-900 { background-color: var(--kv-navy); }
+  .hover\:bg-slate-50\/70:hover { background-color: var(--kv-surface-alt); }
+
+  .border-slate-200\/60, .border-slate-200\/70, .border-slate-200\/80, .border-slate-200\/90,
+  .border-slate-400, .border-blue-50\/80, .border-blue-100\/60, .border-blue-300 { border-color: var(--kv-border); }
+
+  .from-slate-100 { --tw-gradient-from: var(--kv-surface-alt); }
+  .via-slate-50 { --tw-gradient-via: var(--kv-surface-alt); }
+  .to-slate-100 { --tw-gradient-to: var(--kv-surface-sunken); }
+
+  /* Light blues that sit on the navy sidebar. */
+  .text-blue-100, .text-blue-200, .text-blue-200\/90, .text-blue-300 { color: var(--kv-on-nav-muted); }
+
+  /* Indigo and violet were a second brand accent; they resolve to beige now. */
+  .bg-indigo-50, .bg-violet-50 { background-color: var(--kv-accent-soft); }
+  .bg-indigo-700 { background-color: var(--kv-accent-strong); }
+  .text-indigo-700, .text-violet-700 { color: var(--kv-on-accent); }
+  .border-indigo-200 { border-color: var(--kv-accent-strong); }
+}
+
+/* Form controls follow the surface tokens rather than the browser default. */
+input, select, textarea {
+  background-color: var(--kv-surface);
+  color: var(--kv-text);
+}
+input::placeholder, textarea::placeholder { color: var(--kv-text-faint); }
+.dark input, .dark select, .dark textarea { border-color: var(--kv-border); }
+.dark option { background-color: var(--kv-surface); color: var(--kv-text); }
+
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+.material-symbols-outlined.filled {
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* Custom sleek scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--kv-surface-sunken);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--kv-border);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--kv-text-faint);
+}
+
+/* Modal scrims read as the navy brand colour rather than a neutral black. */
+.bg-slate-900\/60, .bg-slate-900\/50 {
+  background-color: color-mix(in srgb, var(--kv-navy) 68%, transparent);
+}
+
+/* Subtle dot/grid background for passes and cards */
+.qr-pattern {
+  background-image: radial-gradient(var(--kv-border) 0.75px, transparent 0.75px);
+  background-size: 10px 10px;
+}
+
+/* ---------------------------------------------------------------------------
+ * Complaint-timeline progress track.
+ *
+ * The segment leading into the stage currently being worked on is drawn as a
+ * travelling gradient so the timeline reads as live rather than frozen, and the
+ * node on that stage breathes. Both stop under prefers-reduced-motion, where the
+ * track falls back to a solid brand line.
+ * ------------------------------------------------------------------------ */
+.kv-track-live {
+  background-image: linear-gradient(to bottom, var(--kv-border) 0%, var(--kv-navy) 45%, var(--kv-navy) 55%, var(--kv-border) 100%);
+  background-size: 100% 220%;
+  animation: kv-track-flow 1.8s linear infinite;
+}
+
+@keyframes kv-track-flow {
+  from { background-position: 0 -120%; }
+  to   { background-position: 0 120%; }
+}
+
+.kv-node-live {
+  box-shadow: 0 0 0 3px var(--kv-border-soft);
+  animation: kv-node-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes kv-node-pulse {
+  0%, 100% { box-shadow: 0 0 0 3px var(--kv-border-soft); }
+  50%      { box-shadow: 0 0 0 6px color-mix(in srgb, var(--kv-primary) 18%, transparent); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kv-track-live {
+    background-image: none;
+    background-color: var(--kv-primary);
+    animation: none;
+  }
+  .kv-node-live { animation: none; }
+}
+
+/* ---------------------------------------------------------------------------
+   Print: only the report document reaches the paper. The portal chrome
+   (sidebar, top bar, tabs, buttons) is dropped and the page is laid out light,
+   edge to edge, whatever theme is on screen.
+--------------------------------------------------------------------------- */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 14mm 12mm;
+  }
+
+  html, body {
+    background: #fff !important;
+    color: #111 !important;
+  }
+
+  body * {
+    visibility: hidden;
+  }
+
+  .print-area,
+  .print-area * {
+    visibility: visible;
+  }
+
+  .print-area {
+    position: absolute;
+    inset: 0 auto auto 0;
+    width: 100%;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #fff !important;
+    color: #111 !important;
+  }
+
+  .print-hide,
+  .print-area .print-hide {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+
+  /* Cards and tables print as plain ruled blocks, never as floating UI. */
+  .print-area .bg-white,
+  .print-area section {
+    background: #fff !important;
+    box-shadow: none !important;
+    border-color: #999 !important;
+  }
+
+  .print-area table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    font-size: 10.5pt;
+  }
+
+  .print-area th,
+  .print-area td {
+    border: 1px solid #999 !important;
+    padding: 4px 6px !important;
+    color: #111 !important;
+    text-align: left;
+  }
+
+  .print-area thead {
+    display: table-header-group;
+  }
+
+  .print-area tr,
+  .print-area .print-keep {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .print-area h1, .print-area h2, .print-area h3 {
+    color: #111 !important;
+  }
+}
+
+.print-only {
+  display: none;
+}

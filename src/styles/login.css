@@ -1,0 +1,528 @@
+/* ==========================================================================
+   KVCET HOSTEL ERP — LOGIN PAGE STYLES
+   Exact screenshot design matching:
+   - Deep navy-blue background
+   - Large white rounded card (28px radius)
+   - Elegant serif institutional title & sans subtitle
+   - Navy horizontal divider
+   - Framed double-border User Role dropdown (11 institutional roles)
+   - Pale-blue input fields with light-blue borders
+   - Accessible password eye toggle
+   - Checked Remember Me checkbox & Forgot Password interactive dialog
+   - Full-width dark navy Sign In button
+   - Centered biometric informational hint
+   ========================================================================== */
+
+:root {
+  /* The authentication screens read from the same three-colour system as the
+     portals; every value below resolves to a --kv-* role token. */
+  --erp-navy-bg: var(--kv-navy);
+  --erp-navy-gradient: linear-gradient(180deg, var(--kv-navy) 0%, #1E3C52 45%, var(--kv-navy) 100%);
+  --erp-primary-navy: var(--kv-primary);
+  --erp-primary-hover: var(--kv-primary-hover);
+  --erp-primary-active: var(--kv-navy);
+  --erp-title-serif: var(--kv-heading);
+  --erp-text-subtitle: var(--kv-text-muted);
+  --erp-label-color: var(--kv-text);
+  --erp-input-text: var(--kv-text);
+  --erp-placeholder: var(--kv-text-faint);
+  --erp-input-bg: var(--kv-blue);
+  --erp-input-border: var(--kv-border);
+  --erp-input-focus-border: var(--kv-primary);
+  --erp-role-border: var(--kv-primary);
+  --erp-link-color: var(--kv-primary);
+  --erp-hint-color: var(--kv-text-muted);
+  --erp-divider-color: var(--kv-accent);
+  --erp-error-color: #B42318;
+  --erp-error-bg: #FEF3F2;
+}
+
+/* Outer Full-Viewport Container */
+.erp-login-viewport {
+  min-height: 100vh;
+  min-height: 100dvh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--erp-navy-gradient);
+  padding: 24px 16px;
+  box-sizing: border-box;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  color: var(--erp-input-text);
+  position: relative;
+  overflow-y: auto;
+}
+
+/* Centered Login Card */
+.erp-login-card {
+  width: 100%;
+  max-width: 400px;
+  background-color: var(--kv-surface);
+  border-radius: 28px;
+  box-shadow: 0 20px 48px rgba(2, 14, 38, 0.45);
+  padding: 38px 28px 32px 28px;
+  box-sizing: border-box;
+  position: relative;
+  margin: auto;
+}
+
+@media (max-width: 480px) {
+  .erp-login-viewport {
+    padding: 16px 12px;
+  }
+  .erp-login-card {
+    padding: 34px 22px 28px 22px;
+    border-radius: 24px;
+  }
+}
+
+/* Card Header */
+.erp-card-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.erp-card-title {
+  font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  font-size: 25px;
+  font-weight: 700;
+  color: var(--erp-title-serif);
+  letter-spacing: 0.2px;
+  line-height: 1.25;
+  margin: 0;
+}
+
+.erp-card-subtitle {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15px;
+  color: var(--erp-text-subtitle);
+  margin-top: 6px;
+  margin-bottom: 0;
+  font-weight: 400;
+}
+
+.erp-card-divider {
+  width: 44px;
+  height: 3.5px;
+  background-color: var(--erp-divider-color);
+  border-radius: 2px;
+  margin: 12px auto 0 auto;
+}
+
+/* Form Layout */
+.erp-login-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.erp-form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 18px;
+  position: relative;
+}
+
+.erp-form-label {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--erp-label-color);
+  margin-bottom: 7px;
+  text-align: left;
+  letter-spacing: -0.1px;
+}
+
+/* ==========================================================================
+   User Role Dropdown
+   Distinctive double-border framed look matching screenshot
+   ========================================================================== */
+.erp-role-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.erp-role-button {
+  width: 100%;
+  height: 48px;
+  background-color: var(--kv-surface);
+  /* Double border outline matching target screenshot */
+  border: 1.5px solid var(--erp-role-border);
+  box-shadow: 0 0 0 1.5px var(--kv-surface), 0 0 0 3px var(--erp-role-border);
+  border-radius: 12px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--erp-input-text);
+  outline: none;
+  transition: box-shadow 0.15s ease, border-color 0.15s ease;
+  user-select: none;
+  box-sizing: border-box;
+}
+
+.erp-role-button:focus-visible {
+  box-shadow: 0 0 0 1.5px var(--kv-surface), 0 0 0 3.5px var(--erp-primary-navy), 0 0 0 5.5px color-mix(in srgb, var(--kv-navy) 25%, transparent);
+}
+
+.erp-role-button[aria-expanded="true"] {
+  border-color: var(--erp-primary-navy);
+}
+
+.erp-role-chevron {
+  color: var(--erp-primary-navy);
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.erp-role-chevron.open {
+  transform: rotate(180deg);
+}
+
+/* Role Dropdown Menu */
+.erp-role-menu {
+  position: absolute;
+  top: calc(100% + 7px);
+  left: 0;
+  right: 0;
+  background-color: var(--kv-surface);
+  border: 1.5px solid var(--erp-input-border);
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgba(12, 56, 102, 0.18);
+  max-height: 240px;
+  overflow-y: auto;
+  z-index: 100;
+  padding: 6px;
+  list-style: none;
+  margin: 0;
+}
+
+.erp-role-item {
+  padding: 9px 12px;
+  border-radius: 8px;
+  font-size: 14.5px;
+  color: var(--erp-primary-navy);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: background-color 0.12s ease;
+  user-select: none;
+}
+
+.erp-role-item:hover,
+.erp-role-item:focus {
+  background-color: var(--erp-input-bg);
+  outline: none;
+}
+
+.erp-role-item.selected {
+  background-color: var(--erp-input-bg);
+  font-weight: 600;
+}
+
+/* Form Inputs (Email & Password) */
+.erp-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.erp-input {
+  width: 100%;
+  height: 48px;
+  background-color: var(--erp-input-bg);
+  border: 1.5px solid var(--erp-input-border);
+  border-radius: 12px;
+  padding: 0 16px;
+  font-size: 15px;
+  color: var(--erp-input-text);
+  box-sizing: border-box;
+  outline: none;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.erp-input::placeholder {
+  color: var(--erp-placeholder);
+  opacity: 1;
+}
+
+.erp-input:focus {
+  border-color: var(--erp-input-focus-border);
+  background-color: var(--kv-surface);
+  box-shadow: 0 0 0 3px rgba(18, 67, 123, 0.18);
+}
+
+.erp-input.has-error {
+  border-color: var(--erp-error-color);
+  background-color: var(--erp-error-bg);
+}
+
+.erp-input-password {
+  padding-right: 48px;
+}
+
+/* Password Toggle Eye Button */
+.erp-eye-btn {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  color: var(--erp-primary-navy);
+  padding: 0;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.erp-eye-btn:hover {
+  background-color: rgba(18, 67, 123, 0.08);
+}
+
+.erp-eye-btn:focus-visible {
+  outline: 2px solid var(--erp-primary-navy);
+  outline-offset: 1px;
+}
+
+/* Form Error Text */
+.erp-error-text {
+  font-size: 12px;
+  color: var(--erp-error-color);
+  margin-top: 5px;
+  text-align: left;
+}
+
+/* Remember Me & Forgot Password Row */
+.erp-options-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2px;
+  margin-bottom: 22px;
+}
+
+.erp-remember-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13.5px;
+  color: var(--kv-text-muted);
+  cursor: pointer;
+  user-select: none;
+}
+
+.erp-checkbox-custom {
+  width: 17px;
+  height: 17px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+  box-sizing: border-box;
+}
+
+.erp-checkbox-custom.checked {
+  background-color: var(--erp-primary-navy);
+  border: 1.5px solid var(--erp-primary-navy);
+  color: var(--kv-on-primary);
+}
+
+.erp-checkbox-custom.unchecked {
+  background-color: var(--kv-surface);
+  border: 1.5px solid var(--kv-border);
+  color: transparent;
+}
+
+.erp-checkbox-hidden {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.erp-forgot-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--erp-link-color);
+  cursor: pointer;
+  font-family: inherit;
+  text-decoration: none;
+  transition: text-decoration 0.15s ease, color 0.15s ease;
+}
+
+.erp-forgot-btn:hover {
+  text-decoration: underline;
+  color: var(--erp-primary-navy);
+}
+
+.erp-forgot-btn:focus-visible {
+  outline: 2px solid var(--erp-link-color);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+/* Sign In Button */
+.erp-submit-btn {
+  width: 100%;
+  height: 50px;
+  background-color: var(--erp-primary-navy);
+  color: var(--kv-on-primary);
+  font-size: 15.5px;
+  font-weight: 600;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  letter-spacing: -0.1px;
+  transition: background-color 0.15s ease, transform 0.05s ease, box-shadow 0.15s ease;
+  box-sizing: border-box;
+}
+
+.erp-submit-btn:hover:not(:disabled) {
+  background-color: var(--erp-primary-hover);
+}
+
+.erp-submit-btn:active:not(:disabled) {
+  transform: scale(0.99);
+  background-color: var(--erp-primary-active);
+}
+
+.erp-submit-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(12, 56, 102, 0.35);
+}
+
+.erp-submit-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Biometric Hint */
+.erp-biometric-hint {
+  font-size: 12.5px;
+  color: var(--erp-hint-color);
+  text-align: center;
+  margin-top: 15px;
+  margin-bottom: 0;
+  line-height: 1.4;
+  font-weight: 400;
+  letter-spacing: -0.05px;
+}
+
+/* ==========================================================================
+   Modals & Accessible Dialogs (Forgot Password & Demo Success)
+   ========================================================================== */
+.erp-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 20, 44, 0.65);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+  animation: erpFadeIn 0.2s ease-out;
+}
+
+.erp-modal-card {
+  background: var(--kv-surface);
+  border-radius: 20px;
+  max-width: 380px;
+  width: 100%;
+  padding: 28px 24px 22px 24px;
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.4);
+  text-align: center;
+  animation: erpScaleIn 0.2s ease-out;
+  box-sizing: border-box;
+}
+
+.erp-modal-icon-badge {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: var(--erp-input-bg);
+  color: var(--erp-primary-navy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px auto;
+}
+
+.erp-modal-icon-badge.success {
+  background-color: #e6f7ec;
+  color: #1b8744;
+}
+
+.erp-modal-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--erp-primary-navy);
+  margin: 0 0 10px 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.erp-modal-message {
+  font-size: 14px;
+  color: var(--kv-text-muted);
+  line-height: 1.5;
+  margin: 0 0 22px 0;
+  white-space: pre-line;
+}
+
+.erp-modal-btn {
+  width: 100%;
+  height: 44px;
+  background-color: var(--erp-primary-navy);
+  color: var(--kv-on-primary);
+  font-size: 14.5px;
+  font-weight: 600;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.erp-modal-btn:hover {
+  background-color: var(--erp-primary-hover);
+}
+
+.erp-modal-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(12, 56, 102, 0.35);
+}
+
+@keyframes erpFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes erpScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
